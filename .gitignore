@@ -1,0 +1,14 @@
+# The old decompilation clone's history (its code is src/sdl now): git clone -b psp-port sonic-r.bundle
+/sonic-r.bundle
+# The game's data, from your own CD, and everything built from it
+/sonic-r-cd-rip/
+/build/
+/dist/
+/tools/atracdenc/
+# The XMB's icon, background and sound (the game's art): only the folder's README is in the repository
+/assets/*
+!/assets/README.md
+# Logs and profiles fetched from the PSP
+/*.log
+/gmon.out
+__pycache__/

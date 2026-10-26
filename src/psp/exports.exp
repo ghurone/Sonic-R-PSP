@@ -1,0 +1,12 @@
+# The PRX's exports (BUILD_PRX=1, for PSPLink): the default set plus
+# module_stop, so PSPLink's modstop lets the game give back what it holds
+# (platform_psp.c) and the next build loads without a reset.
+PSP_BEGIN_EXPORTS
+
+PSP_EXPORT_START(syslib, 0, 0x8000)
+PSP_EXPORT_FUNC_HASH(module_start)
+PSP_EXPORT_FUNC_HASH(module_stop)
+PSP_EXPORT_VAR_HASH(module_info)
+PSP_EXPORT_END
+
+PSP_END_EXPORTS
