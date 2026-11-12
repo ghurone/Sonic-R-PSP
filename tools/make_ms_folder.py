@@ -197,6 +197,9 @@ def main():
     ap.add_argument('--loose', action='store_true', help='the data as folders, not SONICR.PAK')
     a = ap.parse_args()
 
+    if not os.path.exists(REPLAY_HEADER):
+        raise SystemExit('not in the repository: %s is missing. Download the whole repository (Code > Download ZIP '
+                         'on GitHub) and run this script from it, not copied out on its own.' % REPLAY_HEADER)
     for d in DATA_DIRS:
         if not os.path.isdir(os.path.join(a.data, d)):
             raise SystemExit('game data folder missing: %s' % os.path.join(a.data, d))

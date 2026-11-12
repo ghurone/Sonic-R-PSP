@@ -36,9 +36,16 @@ changed, but **never sold**, in any form, with or without the game's data.
 
 ## Download
 
-The [releases](https://github.com/ghurone/Sonic-R-PSP/releases) have a ready-made `EBOOT.PBP`. It is only the game's
-program: the game itself still comes from your own CD. Follow the steps below but skip step 3 (and pspdev), and give
-step 4 the EBOOT you downloaded:
+You need two things:
+
+1. **This whole repository**, for the scripts that turn your CD into the folder the PSP reads: **Code → Download
+   ZIP** on this page, then extract it. Keep it whole: the scripts read files from the rest of the repository, so they
+   don't work if the `tools` folder or a script is copied out on its own.
+2. **`EBOOT.PBP`**, from the [releases](https://github.com/ghurone/Sonic-R-PSP/releases). It is only the game's
+   program: the game itself still comes from your own CD.
+
+Then follow the steps below from the extracted folder, but skip step 3 (and pspdev), and give step 4 the EBOOT you
+downloaded:
 
 ```
 python tools/make_ms_folder.py --eboot "C:\path\to\EBOOT.PBP"
@@ -57,7 +64,7 @@ python tools/make_ms_folder.py --eboot "C:\path\to\EBOOT.PBP"
 
 ## How to build
 
-Every command runs from the repository's root.
+Every command runs from the repository's root: the folder with `README.md`, `src` and `tools`.
 
 ### 1. Extract the CD
 
