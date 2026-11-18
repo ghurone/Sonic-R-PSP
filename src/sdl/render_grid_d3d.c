@@ -154,13 +154,13 @@ float g_gridUVBuffer[128 * 8];                   /* 0x006400DC */
 #define GRID_UV_BIAS        (0.5f / 256.0f)
 #define GRID_UV_BIAS2      (-0.5f / 256.0f)
 #elif defined(SONICR_PSP)
-/* The PSP filters the tiles too (texture.c), and minifies through a half-size
- * level (the frame is drawn at 57%): half a texel there is a whole one here.
- * A one-texel inset puts the level-1 sample at the tile's edge on a texel
- * centre, so neither level reaches the next tile — the seams of sea colour
- * along the floor's tile edges. */
-#define GRID_UV_BIAS        (1.0f / 256.0f)
-#define GRID_UV_BIAS2      (-1.0f / 256.0f)
+/* The PSP point-samples the tiles as the PC does, but minifies through a
+ * half-size level (the frame is drawn at 57%), where the ROM's 0.26-texel
+ * inset is 0.13 of a texel: close enough to the next tile for the GE's UV
+ * interpolation to reach it (seams of sea colour along the floor's tile
+ * edges). Half a texel keeps a quarter of one there. */
+#define GRID_UV_BIAS        (0.5f / 256.0f)
+#define GRID_UV_BIAS2      (-0.5f / 256.0f)
 #else
 #define GRID_UV_BIAS        0.001f               /* 0x52F8CA: seam inset (float) */
 #define GRID_UV_BIAS2      (-0.001f)             /* 0x52F8CE: seam inset opposite edge (float) */
@@ -723,7 +723,7 @@ void BuildGridLODTex(void)
     g_tpageHeight[GRID_LOD_TPAGE] = 256;
     GL_KeepPixels(GRID_LOD_TPAGE);
 
-#if defined(BLURRY) || defined(SONICR_PSP)
+#ifdef BLURRY
 //SONICR_DC
     /* Match the playfield tile pages (texture.c D3D_LoadPlayfieldTilesRGB) so
      * LOD blocks and per-tile grid filter the same way. This one is a true

@@ -814,6 +814,7 @@ static void ApplyFactoryDoorUVDeltas(int *polyBase, int deltaA, int deltaB)
             p[j]   = (p[j]   & 0x3FFFFF) + deltaA;
             p[j+1] = (p[j+1] & 0x3FFFFF) + deltaB;
         }
+        TRACK_POLY_CHANGED(p);
     }
 }
 
@@ -1016,6 +1017,7 @@ void UpdateTrackWorld_Factory(void)
     }
     polyPtr[1] = polyPtr[3];                            /* 0x47a689 */
     polyPtr[5] = polyPtr[7];
+    TRACK_POLY_CHANGED(polyPtr);
 
     /* Collectibles + particle spawning — 0x47a695 */
     CheckCollectiblesAllPlayers((int *)s_animDescRuin);     /* 0x47a69e */
@@ -1132,6 +1134,7 @@ void UpdateTrackWorld_Factory(void)
             *(short *)(pp + 0x0A) += 0x40;                  /* vertex 1 U high */
             *(short *)(pp + 0x12) += 0x40;                  /* vertex 2 U high */
             *(short *)(pp + 0x1A) += 0x40;                  /* vertex 3 U high */
+            TRACK_POLY_CHANGED(pp);
         }
     }
 

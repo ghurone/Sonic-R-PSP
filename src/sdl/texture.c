@@ -461,7 +461,7 @@ void D3D_LoadPlayfieldTilesRGB(const char *filename)
     ClaimTpage(tpage1, 256, 256, 1);
     ClaimTpage(tpage2, 256, 256, 1);
 
-#if defined(BLURRY) || defined(SONICR_PSP)
+#ifdef BLURRY
 
 //SONICR_DC
     /* Bilinear the playfield tiles. Per-tpage rather than the global filter:

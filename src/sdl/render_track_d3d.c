@@ -947,6 +947,16 @@ static void RenderWaterBandSWRipple(int vpIdx)
      * PopState restores the ambient state after the fill. */
     R_PushState();
 #endif
+#ifdef SONICR_PSP
+    /* The PSP's depth is rhw, as the DC's (render_gu.c): the band's 1e-4 is
+     * 10000 units away, nearer than the ground reaches at the longer draw
+     * distances, so a band that wrote depth hid the ground beyond it — the
+     * shore cut flat across the water. Drawn before the ground and
+     * everything else, it needs none: depth-write-off, as on DC and as the
+     * sky is. */
+    R_PushState();
+    R_SetDepthWrite(0);
+#endif
     R_SetTexture(tpage);
     R_SetFilter(R_FILTER_NEAREST);
 #ifdef SONICR_DC
@@ -1163,6 +1173,9 @@ static void RenderWaterBandSWRipple(int vpIdx)
     }
 
     R_PopState();
+#ifdef SONICR_PSP
+    R_PopState();   /* (the band's depth-write-off) */
+#endif
 #endif /* SONICR_DC */
 }
 #endif /* WATER_RIPPLE_SW */

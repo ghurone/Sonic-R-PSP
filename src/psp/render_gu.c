@@ -823,22 +823,21 @@ static int bind_texture(int tp)
     }
     t->usedFrame = s_frameNo;
 
-    /* Magnification is the game's choice; minification goes through the mip
-     * level when there is one — the whole 640x480 frame is shrunk to 362x272. */
+    /* The game's filter both ways: point sampling, as the PC's Direct3D set
+     * it once and for all (TEXTUREMAG and TEXTUREMIN D3DFILTER_NEAREST,
+     * 0x434888), unless a page asks for linear. Minification goes through
+     * the mip level when there is one — the whole 640x480 frame is shrunk to
+     * 362x272 — still point-sampled, from the level that fits. */
     int want = s_tpageFilter[tp] ? s_tpageFilter[tp] - 1 : (int)s_desired.filter;
-    /* Tpages the game pins to nearest (texture.c: sprite and font atlases,
-     * TITLES0's "PRESS START") stay point-sampled, from the mip level that
-     * fits — a linear filter pulls the neighbouring atlas cells into each
-     * quad's border. */
-    int pinnedNearest = s_tpageFilter[tp] == R_FILTER_NEAREST + 1;
-    int key = want * 4 + pinnedNearest * 2 + mip;
+    int key = want * 2 + mip;
     if (key != s_appliedFilter) {
-        int mag = (want == R_FILTER_LINEAR) ? GU_LINEAR : GU_NEAREST;
-        int min;
-        if (pinnedNearest) {
-            min = mip ? GU_NEAREST_MIPMAP_NEAREST : GU_NEAREST;
-        } else {
+        int min, mag;
+        if (want == R_FILTER_LINEAR) {
             min = mip ? GU_LINEAR_MIPMAP_LINEAR : GU_LINEAR;
+            mag = GU_LINEAR;
+        } else {
+            min = mip ? GU_NEAREST_MIPMAP_NEAREST : GU_NEAREST;
+            mag = GU_NEAREST;
         }
         sceGuTexFilter(min, mag);
         s_appliedFilter = key;
